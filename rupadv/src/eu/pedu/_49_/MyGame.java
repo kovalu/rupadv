@@ -1,7 +1,7 @@
 /* The file is saved in UTF-8 codepage.
  * Check: «Stereotype», Section mark-§, Copyright-©, Alpha-α, Beta-β, Smile-☺
  */
-package cz.kovalu.rupadv;
+package eu.pedu._49_;
 
 import eu.pedu.adv15p_fw.game_txt.BasicActions;
 import eu.pedu.adv15p_fw.game_txt.IAction;

@@ -1,32 +1,22 @@
 /* The file is saved in UTF-8 codepage.
  * Check: «Stereotype», Section mark-§, Copyright-©, Alpha-α, Beta-β, Smile-☺
  */
-package cz.kovalu.rupadv;
+package eu.pedu._49_;
 
-import eu.pedu.adv15p_fw.game_txt.IGSMFactory;
-import eu.pedu.adv15p_fw.scenario.AScenarioManager;
+import eu.pedu.adv15p_fw.game_txt.IGame;
+import eu.pedu.adv15p_fw.game_txt.INamed;
 
 
 
 /*******************************************************************************
- * Instance třídy {@code EmptyGSMFactory} představují tovární objekty,
- * které jsou schopny na požádání dodat instanci hry,
- * instanci správce scénářů této hry
- * a instanci textového uživatelského rozhraní.
- * Dokud ještě některé z těchto objektů nejsou definovány,
- * vyhazují metody výjimku {@link UnsupportedOperationException}.
- * <p>
- * V první fázi vývoje celé aplikace bývá aktivní pouze metoda
- * {@link #getScenarioManager()} umožňující získání instance správce scénářů
- * vyvíjené hry a těla zbylých metod bývají zakomentovaná.
- * Posléze po odkomentování zakomentovaných těl metod lze postupně získat
- * také vlastní textové i grafické verze hry
- * a jejího textového, resp. grafického uživatelského rozhraní.
+ * Instance třídy {@code ANamed} představují rodičovské podobjekty
+ * instancí tříd pojmenovaných objektů,
+ * tj. tříd implementujících interfejs {@link INamed}.
  *
  * @author  Rudolf PECINOVSKÝ
  * @version 2015-Podzim
  */
-public class MyGSMFactory implements IGSMFactory, IAuthorMe
+public abstract class ANamed implements INamed
 {
 //== CONSTANT CLASS ATTRIBUTES =================================================
 //== VARIABLE CLASS ATTRIBUTES =================================================
@@ -43,6 +33,12 @@ public class MyGSMFactory implements IGSMFactory, IAuthorMe
 
 //##############################################################################
 //== CONSTANT INSTANCE ATTRIBUTES ==============================================
+
+    /** Název dané instance. */
+    private final String name;
+
+
+
 //== VARIABLE INSTANCE ATTRIBUTES ==============================================
 
 
@@ -51,10 +47,29 @@ public class MyGSMFactory implements IGSMFactory, IAuthorMe
 //== CONSTUCTORS AND FACTORY METHODS ===========================================
 
     /***************************************************************************
-     * Vytvoří tovární objekt poskytující klíčové objekty aplikace.
+     * Vytvoří rodičovský podobjekt instance objektu se zadaným názvem.
+     * Konstruktor přitom zkontroluje, že zadávaný název není prázdný odkaz
+     * ani prázdný řetězec, a že není-li pojmenovávaný objekt objektem hry,
+     * tak je jednoslovný, tj. neobsahuje bílé znaky.
+     *
+     * @param name Název dané instance
      */
-    public MyGSMFactory()
+    public ANamed(String name)
     {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException(
+                        "\nJako název objektu nesmí být zadán "
+                      + "prádzný odkaz ani prázdný řetězec");
+        }
+        if (!(this instanceof IGame)
+                && (!name.equals(name.trim())
+                        || name.split("\\s").length > 1)) {
+            throw new IllegalArgumentException(
+                        "\nNázvy objektů musejí být jednoslovné, "
+                      + "tj. nesmějí obsahovat bílé znaky - Zadáno: «"
+                      + name + '»');
+        }
+        this.name = name;
     }
 
 
@@ -63,43 +78,33 @@ public class MyGSMFactory implements IGSMFactory, IAuthorMe
 //== INSTANCE GETTERS AND SETTERS ==============================================
 
     /***************************************************************************
-     * Vrátí odkaz na instanci správce scénářů.
+     * Vrátí název dané instance.
      *
-     * @return Požadovaný odkaz
-     */
-//    @Override
-//    public AScenarioManager getScenarioManager()
-//    {
-//        return ScenarioManager.getInstance();
-//    }
-
-
-    /***************************************************************************
-     * Vrátí odkaz na instanci textové verze hry.
-     *
-     * @return Požadovaný odkaz
+     * @return Název instance
      */
     @Override
-    public MyGame getGame()
+    public String getName()
     {
-        return MyGame.getInstance();
+        return name;
     }
-
-
-    /***************************************************************************
-     * Vrátí odkaz na instanci třídy realizující uživatelské rozhraní.
-     *
-     * @return Požadovaný odkaz
-     */
-//    @Override
-//    public IUI getUI()
-//    {
-//        return TextUI_Instance;
-//    }
 
 
 
 //== OTHER NON-PRIVATE INSTANCE METHODS ========================================
+
+    /***************************************************************************
+     * Vrátí textový podpis dané instance tvořený názvem instance.
+     *
+     * @return Název instance
+     */
+    @Override
+    public String toString()
+    {
+        return name;
+    }
+
+
+
 //== PRIVATE AND AUXILIARY INSTANCE METHODS ====================================
 
 
